@@ -1,0 +1,44 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}Member Messages{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button
+    class="back-button btn btn-outline-primary" 
+    onclick="window.location.href ='/member/member_dashboard'">
+    Back
+    </button>
+</div>
+
+<div class="custom-container">
+    <h2 class="subtitle">Messages</h2>
+    <table class="table table-bordered text-center table-hover">
+        <colgroup>
+            <!-- Define column widths as needed -->
+            <col style="width: 20%;">
+            <col style="width: 30%;">
+            <col style="width: 50%;">
+        </colgroup>
+        <thead>
+            <tr class="bg-light-gray text-uppercase">
+                <th class="text-center">Date & Time</th>
+                <th class="text-center">Subject</th>
+                <th class="text-center">Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+                <tr>
+                    <td class="text-center">{{ message[3].strftime('%a, %b %d, %Y %I:%M %p').lstrip('0').replace(" 0", " ") }}</td>
+                    <td class="text-center">{{ message[1] }}</td>
+                    <td class="text-center">{{ message[2] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+
+

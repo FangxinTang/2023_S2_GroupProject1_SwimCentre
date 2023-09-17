@@ -1,0 +1,694 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}Aqua Aerobics{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button
+    class="back-button btn btn-outline-primary" 
+    onclick="window.location.href ='/member/member_dashboard'">
+    Back
+    </button>
+</div>
+
+
+<h2 class="subtitle">Aqua Aerobics Weekly Schedule</h2>
+
+
+<!-- test code: -->
+<!-- {{classlist}} <br> -->
+<!-- {{classlist[0][5].seconds // 3600}} {{classlist[0][6].seconds // 3600}} -->
+<!-- {{booked_courses}} -->
+
+<div class="custom-container">
+
+
+    <div class="container-fluid">
+        <table id="schedule-table" class="table table-bordered text-center table-hover">
+            <thead>
+                <tr class="bg-light-gray text-uppercase">
+                    <th>Time</th>
+                    <!-- <th class="text-uppercase">Monday</th>
+                    <th class="text-uppercase">Tuesday</th>
+                    <th class="text-uppercase">Wednesday</th>
+                    <th class="text-uppercase">Thursday</th>
+                    <th class="text-uppercase">Friday</th>
+                    <th class="text-uppercase">Saturday</th>
+                    <th class="text-uppercase">Sunday</th> -->
+
+                    <!-- Fangxin edited -->
+                    {% for day in days %}
+                    <th> {{day}} </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            <!-- ******** Fangxin's edited ************ -->
+            <tbody>
+                {% for time_slot in time_slots %}
+                <!-- Create a new table row for each time slot -->
+                <tr>
+                    <!-- Display the time slot range in the first column -->
+                    <td class='time-column'>{{ time_slot[0]}}:00 - {{ time_slot[1] }}:00</td>
+
+                    <!-- For each day of the week, iterate through and create table cells -->
+                    {% for day in days %}
+                    <td>
+                        <!-- Within each cell, iterate through the list of classes -->
+                        {% for class in classlist %}
+                        <!-- Check if the class matches the current day, start time, and end time -->
+                        <!-- NOTE: the date time is int -->
+                        {% if class[4] == day and class[5].seconds//3600 == time_slot[0] and class[6].seconds//3600 ==
+                        time_slot[1] %}
+                        <!-- Display course information -->
+
+                        <span class="banner">
+                            {{ class[1] }}
+                        </span>
+
+                        <div class="intro-words">
+                            <p>Instructor:</p>
+                            <p class="strong">{{ class[12] }} {{ class[13] }}</p>
+
+
+                            <p>Pool:</p>
+                            <p class="strong">{{ class[21] }}</p>   
+                        </div>
+
+
+                        <!-- situation1: if fully booked and user also booked the class, display cancel booking button -->
+                        {% if class[8] >= class[7] %}
+
+                            {% if class[0] in booked_courses %}
+                            <!-- Add a form to cancel the course -->
+                            <form method="POST" action="{{ url_for('member.cancel_group_class') }}">
+                                <input type="hidden" name="course_id" value="{{ class[0] }}">
+                                <input type="hidden" name="instructor_id" value="{{ class[8] }}">
+                                <button type="submit" class="btn btn-sm btn-outline-primary cancel-btn">Cancel My Booking</button>
+                            </form>
+
+                            {% else %}
+                            <!-- situation2: if fully booked and user doesn't booked this class, display fully booked button -->
+                            <button class="btn btn-secondary btn-sm disabled">Fully Booked</button>
+                            {% endif %}
+                        
+                        {% else %} 
+
+                            <!-- situation3: if not fully booked, but user already booked this class, display cancel booking -->
+                            {% if class[0] in booked_courses %}
+                            <form method="POST" action="{{ url_for('member.cancel_group_class') }}">
+                                <input type="hidden" name="course_id" value="{{ class[0] }}">
+                                <input type="hidden" name="instructor_id" value="{{ class[8] }}">
+                                <button type="submit" class="btn btn-sm btn-outline-primary cancel-btn">Cancel My Booking</button>
+                            </form>
+                            {% else %}
+                            <!-- situation4: if not fully booked, but user hasn't booked this class, display book now -->
+                            <form method="POST" action="{{ url_for('member.book_group_class') }}">
+                                <input type="hidden" name="course_id" value="{{ class[0] }}">
+                                <input type="hidden" name="instructor_id" value="{{ class[8] }}">
+                                <button type="submit" class="btn btn-sm btn-primary book-btn">Book Now</button>
+                            </form>
+                            {% endif %}
+
+                        {% endif %}
+
+                        {% endif %}
+                    {% endfor %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+
+            <!-- *********** Dora's ************ -->
+            <!-- <tbody>
+                <tr>
+                    <td class="align-middle">09:00am</td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Monday" and class[5].seconds == 32400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Tuesday" and class[5].seconds == 32400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Wednesday" and class[5].seconds == 32400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Thursday" and class[5].seconds == 32400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Friday" and class[5].seconds == 32400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Saturday" and class[5].seconds == 32400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Sunday" and class[5].seconds == 32400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="align-middle">10:00am</td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Monday" and class[5].seconds == 36000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Tuesday" and class[5].seconds == 36000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Wednesday" and class[5].seconds == 36000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Thursday" and class[5].seconds == 36000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Friday" and class[5].seconds == 36000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Saturday" and class[5].seconds == 36000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Sunday" and class[5].seconds == 36000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="align-middle">11:00am</td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Monday" and class[5].seconds == 39600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Tuesday" and class[5].seconds == 39600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Wednesday" and class[5].seconds == 39600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Thursday" and class[5].seconds == 39600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Friday" and class[5].seconds == 39600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Saturday" and class[5].seconds == 39600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Sunday" and class[5].seconds == 39600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    
+                </tr>
+
+                <tr>
+                    <td class="align-middle">12:00pm</td>
+                    <td>
+                        <span class="bg-gray padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Break</span>
+                        <div class="margin-10px-top font-size14">12:00-1:00</div>
+                    </td>
+                    <td>
+                        <span class="bg-gray padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Break</span>
+                        <div class="margin-10px-top font-size14">12:00-1:00</div>
+                    </td>
+                    <td>
+                        <span class="bg-gray padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Break</span>
+                        <div class="margin-10px-top font-size14">12:00-1:00</div>
+                    </td>
+                    <td>
+                        <span class="bg-gray padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Break</span>
+                        <div class="margin-10px-top font-size14">12:00-1:00</div>
+                    </td>
+                    <td>
+                        <span class="bg-gray padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Break</span>
+                        <div class="margin-10px-top font-size14">12:00-1:00</div>
+                    </td>
+                    <td>
+                        <span class="bg-gray padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Break</span>
+                        <div class="margin-10px-top font-size14">12:00-1:00</div>
+                    </td>
+                    <td>
+                        <span class="bg-gray padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13">Break</span>
+                        <div class="margin-10px-top font-size14">12:00-1:00</div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="align-middle">01:00pm</td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Monday" and class[5].seconds == 46800 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Tuesday" and class[5].seconds == 46800 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Wednesday" and class[5].seconds == 46800 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Thursday" and class[5].seconds == 46800 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Friday" and class[5].seconds == 46800 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Saturday" and class[5].seconds == 46800 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Sunday" and class[5].seconds == 46800 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">02:00pm</td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Monday" and class[5].seconds == 50400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Tuesday" and class[5].seconds == 50400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Wednesday" and class[5].seconds == 50400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Thursday" and class[5].seconds == 50400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Friday" and class[5].seconds == 50400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Saturday" and class[5].seconds == 50400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Sunday" and class[5].seconds == 50400 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">03:00pm</td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Monday" and class[5].seconds == 54000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Tuesday" and class[5].seconds == 54000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Wednesday" and class[5].seconds == 54000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Thursday" and class[5].seconds == 54000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Friday" and class[5].seconds == 54000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Saturday" and class[5].seconds == 54000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Sunday" and class[5].seconds == 54000 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">04:00pm</td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Monday" and class[5].seconds == 57600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Tuesday" and class[5].seconds == 57600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Wednesday" and class[5].seconds == 57600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Thursday" and class[5].seconds == 57600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Friday" and class[5].seconds == 57600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Saturday" and class[5].seconds == 57600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Sunday" and class[5].seconds == 57600 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="align-middle">05:00pm</td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Monday" and class[5].seconds == 61200 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Tuesday" and class[5].seconds == 61200 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Wednesday" and class[5].seconds == 61200 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %}     
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Thursday" and class[5].seconds == 61200 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Friday" and class[5].seconds == 61200 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Saturday" and class[5].seconds == 61200 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                    <td>
+                        {% for class in classlist %}
+                            {% if class[4] == "Sunday" and class[5].seconds == 61200 %} 
+                                <span class="bg-sky padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">{{ class[1] }}</span>
+                                <div class="margin-10px-top font-size14">{{ class[5] }}-{{ class[6] }}</div>
+                                <div class="font-size13 text-light-gray">{{ class[11] }} {{ class[12] }}</div>
+                            {% endif %}   
+                        {% endfor %} 
+                    </td>
+                </tr>    
+                
+            </tbody> -->
+        </table>
+    </div>
+</div>
+{% endblock %}

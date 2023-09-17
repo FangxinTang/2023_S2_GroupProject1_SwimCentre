@@ -1,0 +1,70 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}Swim Instructors{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+<!-- Fangxin Edit -->
+<h2 class="subtitle">Instructors</h2>
+
+<div class="two-col-table-container">
+
+    <div class="container-fluid">
+        <table id="member-view-instructor-table" class="table table-bordered text-center table-hover">
+            <thead>
+                <tr class="bg-light-gray text-uppercase">
+                    <th>Instructor</th>
+                    <th>Descriptions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in instructors %}
+                <tr style="text-align: left; vertical-align: middle;">
+                    <td>
+                        <a href="{{ url_for('member.view_instructor_detail', instructor_id=row[0]) }}">
+                            <img src="{{ row[9] }}" alt="{{row[9]}}" class="bd-placeholder-img card-img-top" width="100%"
+                                height="225">
+                        </a>
+                    </td>
+                    <td>
+                        <h4>{{ row[2]}} {{ row[3] }}</h4>
+                        <p>Position: <strong>{{row[4]}}</strong>></p>
+                        <p>About me: <strong>{{row[7]}}</strong></p>
+                        <a href="{{ url_for('member.view_instructor_detail', instructor_id=row[0]) }}">
+                            <p style="text-align: right;">Profile</p>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor%}
+            </tbody>
+        </table>       
+        
+    </div>
+</div>
+
+
+
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Swim Instructors</h1>
+            <p>Welcome, {{ username }}! Here is a list of swim instructors:</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="list-group">
+                {% for instructor in instructors %}
+                <a href="{{ url_for('member.view_instructor_detail', instructor_id=instructor[0]) }}" class="list-group-item list-group-item-action">
+                    {{ instructor[2] }} {{ instructor[3] }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endblock %}

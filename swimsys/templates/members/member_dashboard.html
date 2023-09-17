@@ -1,0 +1,54 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}Member Dashboard{% endblock %}
+
+{% block main %}
+<div class="custom-container">
+    <div class="row text-align-center">
+
+        <div class="col-md-12">
+            <h1>Member Dashboard</h1>
+            <p>Welcome, {{ username }}!</p>
+            
+            <!-- Display the remaining days in the subscription -->
+            {% if remaining_days is not none %}
+                {% if remaining_days > 0 %}
+                    Membership Expires in {{ remaining_days }} days.
+                {% else %}
+                    <span style="color: red">Subscription Expired</span>
+                {% endif %}
+            {% else %}
+                <span style="color: gray">No Subscription</span>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="row text-align-center">
+        <div class="col-md-12" style="display:flex; justify-content: center;">
+            <div class="card" style="width: 400px">
+                <div class="card-body">
+                    <a href="{{ url_for('member.member_view_aqua_schedule') }}" class="btn btn-primary w-100">Weekly
+                        Aqua Aerobics Classes Schedule</a>
+                    <br><br>
+                    <a href="{{ url_for('member.view_lesson_slots') }}" class="btn btn-primary w-100">Fortnightly Private Swimming Lesson Slots</a>
+                    <br><br>
+                    <a href="{{ url_for('member.book_group_class') }}" class="btn btn-primary w-100">View My
+                        Bookings</a>
+                    <br><br>
+                    <a href="{{ url_for('member.view_instructors') }}" class="btn btn-primary w-100">View Swim
+                        Instructors</a>
+                    <br><br>
+                    <a href="{{ url_for('member.renew_subscription') }}" class="btn btn-primary w-100">Renew
+                        Subscription</a>
+                    <br><br>
+                    <a href="{{ url_for('member.message') }}" class="btn btn-primary w-100">Check Messages/News</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

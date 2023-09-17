@@ -1,0 +1,82 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}Pay Tuition{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="window.location.href ='/member/view_lesson_slots'">
+        Back
+    </button>
+</div>
+
+<div class="custom-container">
+
+    <!-- test code -->
+    <!-- instructor=instructor,
+        date=date,
+        time=time,
+        duration=duration,
+        tuition=tuition,
+        lesson_status=lesson_status,
+        pool_name=pool_name) -->
+    <!-- 
+        {{lesson_status}}
+        {{lesson_id}}
+        
+        <hr> -->
+
+    <h2 class="subtitle">Pay and Book Private Lesson</h2>
+
+    <div class="two-col-table-container">
+
+        <table class="table table-bordered  text-center">
+            <thead>
+                <tr class="bg-light-gray text-uppercase" style="font-weight: bold;">
+                    <td style="text-align: right;">itmes</td>
+                    <td style="text-align: left;">details</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                {%for key, val in invoice_dict.items()%}
+                <tr>
+                    <td style="text-align: right; font-weight: bold;">
+                        {{key.upper()}}
+                    </td>
+                    <td style="text-align: left; font-weight: bold;">
+                        {%if key == "tuition"%}
+                        <em>${{val}}</em>
+
+                        {%elif key == "date"%}
+                        <em>{{val.split('-')[2]}}-{{ val.split('-')[1] }}-{{ val.split('-')[0] }}</em>
+
+                        {%elif key == "time"%}
+                        <em>{{val[:-3]}}</em>
+
+                        {%elif key == "duration"%}
+                        <em>{{val}}mins</em>
+
+                        {%else%}
+                        <em>{{val}}</em>
+
+                        {%endif%}
+                    </td>
+                    {%endfor%}
+
+            </tbody>
+
+
+        </table>
+
+        <div style="display: flex; justify-content: flex-end;">
+            <form action="{{url_for('member.update_tuition')}}" method="POST">
+                <input type="hidden" name="lesson_id" value="{{ lesson_id }}">
+                <input type="hidden" name="member_id" value="{{ member_id }}">
+                <input type="hidden" name="payment_type" value="tuition">
+                <input type="hidden" name="lesson_status" value="booked">
+                <button type="submit" class="btn btn-primary tuition-btn">Confirm Payment</button>
+            </form>
+        </div>
+    </div>
+
+    {% endblock %}

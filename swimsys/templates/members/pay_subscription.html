@@ -1,0 +1,33 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}Pay Subscription{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button
+    class="back-button btn btn-outline-primary" 
+    onclick="window.location.href ='/member/renew_subscription'">
+    Back
+    </button>
+</div>
+
+<div class="custom-container">
+
+    <div class="text-center">
+        <h2 class="subtitle">My Subscription</h2>
+        <p> Hello, {{ subscription_detail[10] }} {{ subscription_detail[11] }} {{ subscription_detail[12] }}.</p>
+        <p> Your subscription due date is (was): {{ subscription_end_date }}</p>
+        <p> You are paying for period: {{start_date}} to {{end_date}}</p>
+        <form action="{{ url_for('member.update_subscription') }}" method="post">
+            <input type="hidden" name = "start_date" value="{{start_date}}">
+            <input type="hidden" name = "end_date" value="{{end_date}}">    
+            <button type="submit" class="btn btn-primary  subscription-btn">Pay $70 Monthly Subscription</button>
+        </form>
+    </form>
+
+       
+    </div>
+
+</div>
+
+{% endblock %}

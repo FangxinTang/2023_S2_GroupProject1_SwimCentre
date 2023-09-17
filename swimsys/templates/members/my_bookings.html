@@ -1,0 +1,99 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}My bookings{% endblock %}
+
+{% block main %}
+
+<!-- test code --> 
+<!-- {{member_id}} <hr> -->
+<!-- {{ids}} <hr> -->
+
+<!-- {%for row in courses%}
+{{row}} <br>
+{%endfor%} <hr>    -->
+
+
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+
+<div class="custom-container">
+
+    <div class="text-center">
+        <h2 class="subtitle">My Bookings</h2>
+        <hr>
+    </div>
+
+    <div class="container-fluid">
+        <table class="table table-bordered text-center table-hover">
+            <div class="text-center">
+                <h4 class="subtitle">Aqua Aerobics Classes</h4>
+            </div>
+
+            <thead>
+                <tr class="bg-light-gray text-uppercase">
+                    <th>class name</th>
+                    <th>Day</th>
+                    <th>time</th>
+                    <th>instructor</th>
+                    <th>Pool</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in courses %}
+               
+                <tr>
+                    {% for id in ids %}
+                    {% if row[0] == id %}
+                    <td>{{row[1]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4].seconds // 3600}}:00 - {{row[5].seconds // 3600}}:00</td>
+                    <td>{{row[7]}} {{row[8]}}</td>
+                    <td>{{row[9]}}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+        <!-- test code -->
+        <!-- {{all_booked_lessons}} -->
+        <br>
+        <table class="table table-bordered text-center table-hover">
+            <div class="text-center">
+                <h4 class="subtitle">Fortnightly Swimming Lessons</h4>
+            </div>
+
+            <thead>
+                <tr class="bg-light-gray text-uppercase">
+                    <th>Instructor</th>
+                    <th>date</th>
+                    <th>time</th>
+                    <th>duration</th>
+                    <th>pool</th>
+                    <th>status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in all_booked_lessons %}
+                <tr>
+                    <td>{{ row[0] }}</td> 
+                    <td>{{ row[1] }}</td> 
+                    <td>{{ row[2] }}</td> 
+                    <td>{{ row[3] }}</td> 
+                    <td>{{ row[4] }}</td>
+                    <td>{{ row[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %} 

@@ -1,0 +1,30 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}Pay Subscription{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button
+    class="back-button btn btn-outline-primary" 
+    onclick="window.location.href ='/member/member_dashboard'">
+    Back
+    </button>
+</div>
+
+<div class="custom-container">
+
+    <div class="text-center">
+        <h2 class="subtitle">My Subscription</h2>
+        <p> Hello, {{ subscription_detail[10] }} {{ subscription_detail[11] }} {{ subscription_detail[12] }}.</p>
+        <p>{{ msg }} {{ end_date }}</p>
+        
+        <form action="{{ url_for('member.pay_subscription') }}" method="post">
+                <button type="submit" class="btn btn-primary">Renew Monthly Subscription</button>
+        </form>
+
+       
+    </div>
+
+</div>
+
+{% endblock %}

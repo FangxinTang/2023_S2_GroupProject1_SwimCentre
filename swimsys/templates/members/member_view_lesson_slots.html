@@ -1,0 +1,92 @@
+{% extends "members/base_template/base.html" %}
+
+{% block title %}Lesson Slots{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="window.location.href ='/member/member_dashboard'">
+        Back
+    </button>
+</div>
+
+
+<!-- {%for row in lesson_list%}
+{{row[:-1]}} <br>
+{%endfor%}
+<hr> -->
+<!-- {{current_time}}//
+{{current_date}} -->
+
+
+<h2 class="subtitle">Fortnightly Private Swimming Lesson Slots</h1>
+
+    <div class="container-fluid" style="width: 95%;">
+
+
+        <table id="lesson-slot-table" class="table table-bordered text-center table-hover">
+            <thead>
+                <tr class="bg-light-gray text-uppercase">
+                    <th class="text-uppercase">Time</th>
+                    {% for day, date in weekday_date_list %}
+                    <th class="text-uppercase">
+                        {{day}}<br>
+                        {{date}}
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+
+            <tbody>
+                {% for slot in time_slots %}
+                    <tr>
+                        <td class="time-column">{{ slot[0]}}:00</td>
+                        {% for date in date_list %}                     
+                            <td>
+                                {% for lesson in lesson_list %}
+                                    {% if lesson[4] == date and lesson[5].seconds//3600 == slot[0]  %}
+                                        {% if lesson[7] == "booked" %}
+                                            <span class="banner-booked">{{(lesson[7]).capitalize() }}</span>
+                                            <div class="intro-words">
+                                                <p>Duration:</p>
+                                                <p class="strong">{{ lesson[5].seconds//3600 }}:00 / {{ lesson[3] }}min</p>
+                                                <p>Instructor:</p>
+                                                <p class="strong">{{ lesson[13] }} {{ lesson[14] }}</p>
+                                                {% if lesson[1] == member_id%}
+                                                    <button class="btn btn-outline-success btn-sm disabled">My Booking</button>
+                                                {% endif%}
+                                            </div>
+                                        {% elif lesson[7] == "available" %}
+                                            <span class="banner">{{ lesson[7].capitalize() }}</span>
+                                            <div class="intro-words">
+                                                <p>Duration:</p>
+                                                <p class="strong">{{ lesson[5].seconds // 3600 }}:00 / {{ lesson[3] }}min</p>
+                                                <p>Instructor:</p>
+                                                <p class="strong">{{ lesson[13] }} {{ lesson[14] }}</p>
+                                                <form method="POST" action="{{ url_for('member.pay_and_book_lesson') }}">
+                                                    <input type="hidden" name="lesson_id" value="{{ lesson[0] }}">
+                                                    <input type="hidden" name="member_id" value="{{ member_id }}">
+                                                    <input type="hidden" name="duration" value="{{ lesson[3] }}">
+                                                    <input type="hidden" name="date" value="{{ lesson[4] }}">
+                                                    <input type="hidden" name="time" value="{{ lesson[5] }}">
+                                                    <input type="hidden" name="tuition" value="{{ lesson[6] }}">
+                                                    <input type="hidden" name="lesson_status" value="{{ lesson[7] }}">
+                                                    <input type="hidden" name="pool_id" value="{{ lesson[8] }}">
+                                                    <input type="hidden" name="instructor"
+                                                        value="{{ lesson[13] }} {{ lesson[14] }}">
+                                                    <button type="submit" class="btn btn-sm btn-primary">Book Now</button>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>                        
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    </div>
+    {% endblock %}
