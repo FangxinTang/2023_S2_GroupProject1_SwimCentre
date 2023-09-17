@@ -1,0 +1,93 @@
+{% extends "instructors/base_template/base.html" %}
+
+{% block title %}Instructor Profile{% endblock %}
+
+{% block main %}
+
+<div class="back-button-container">
+    <button
+    class="back-button btn btn-outline-primary" 
+    onclick="window.location.href ='/instructor/instructor_dashboard'">
+    Back
+    </button>
+</div>
+
+<div class="custom-container">
+    <div class="row text-align-center">
+        <div class="subtitle col-md-12">
+            <h2 class="subtitle">Your Profile</h1>
+            <p>Edit your profile information below:</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="display:flex; justify-content: center;">
+            <div class="card" >
+                <div class="card-body" style="width: 600px; height: 1110px;">
+                    <form method="post" enctype="multipart/form-data"> <!-- Place the form tag here -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title:</label>
+                            <input type="text" id="title" name="title" class="form-control form-control-short" value="{{ account[1] }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label"><span style="color: red;">*</span>First Name:</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control form-control-short" value="{{ account[2] }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label"><span style="color: red;">*</span>Last Name:</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control form-control-short" value="{{ account[3] }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="position" class="form-label">Position:</label>
+                            <input type="text" id="position" name="position" class="form-control" value="{{ account[4] }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label"><span style="color: red;">*</span>Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" value="{{ account[6] }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label"><span style="color: red;">*</span>Phone:</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" value="{{ account[5] }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="instructor_profile" class="form-label">Instructor Profile:</label>
+                            <textarea id="instructor_profile" name="instructor_profile" class="form-control" rows="4" cols="50">{{ account[7] }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label"><span style="color: red;">*</span>Username:</label>
+                            <input type="text" id="username" name="username" class="form-control" value="{{ account[12] }}" readonly>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="****">
+                        </div>
+
+                        {% if account[9] %}
+                        <!-- <img src="{{ url_for('static', filename='images/' + account[9]) }}" alt="Instructor Image" width="200"> -->
+                        <!-- Fangxin Tang edits -->
+                        <img src="{{account[9]}}" alt="Instructor Image" width="200">
+                        {% else %}
+                            <p>No image available</p>
+                        {% endif %}
+                        
+                        <p>Instructor Image: <input type="file" name="instructor_image" accept="image/*"></p>
+                        
+                        <button type="submit" class="save-btn btn btn-primary">Save Profile</button>
+                    </form>
+                    {% if msg %}
+                        <div class="alert alert-info mt-3">{{ msg }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

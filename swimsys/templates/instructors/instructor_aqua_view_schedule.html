@@ -1,0 +1,70 @@
+{% extends "instructors/base_template/base.html" %}
+
+{% block title %}Aqua Aerobics{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+<h2 class="subtitle">Aqua Aerobics Weekly Schedule</h2>
+
+<!-- test code: -->
+<!-- {{classlist}} <br> -->
+<!-- {{classlist[0][5].seconds // 3600}} {{classlist[0][6].seconds // 3600}} -->
+<!-- {{booked_courses}} -->
+
+<div class="custom-container">
+
+    <div class="container-fluid">
+        <table id="schedule-table" class="table table-bordered text-center table-hover">
+            <thead>
+                <tr class="bg-light-gray text-uppercase">
+                    <th>Time</th>
+                    {% for day in days %}
+                    <th> {{day}} </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for time_slot in time_slots %}
+                <!-- Create a new table row for each time slot -->
+                <tr>
+                    <!-- Display the time slot range in the first column -->
+                    <td class='time-column'>{{ time_slot[0]}}:00 - {{ time_slot[1] }}:00</td>
+
+                    <!-- For each day of the week, iterate through and create table cells -->
+                    {% for day in days %}
+                    <td>
+                        <!-- Within each cell, iterate through the list of classes -->
+                        {% for class in classlist %}
+                        <!-- Check if the class matches the current day, start time, and end time -->
+                        <!-- NOTE: the date time is int -->
+                        {% if class[4] == day and class[5].seconds//3600 == time_slot[0] and class[6].seconds//3600 ==
+                        time_slot[1] %}
+                        <!-- Display course information -->
+
+                        <span class="banner">
+                            {{ class[1] }}
+                        </span>
+
+                        <div class="intro-words">
+                            <p>Instructor:</p>
+                            <p class="strong">{{ class[12] }} {{ class[13] }}</p>
+
+
+                            <p>Pool:</p>
+                            <p class="strong">{{ class[21] }}</p>   
+                        </div>
+
+                        {% endif %}
+                    {% endfor %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

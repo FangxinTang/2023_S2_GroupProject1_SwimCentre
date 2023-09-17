@@ -1,0 +1,23 @@
+{% extends "instructors/base_template/base.html" %}
+
+{% block title %}Confirm Cancellation{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+
+<div class="custom-container">
+    <h1>Confirm Cancellation</h1>
+    <p>Are you sure you want to cancel the following lesson slot?</p>
+    <p>Date: {{ lesson_slot[14] }}</p>
+    <p>Time: {{ lesson_slot[15] }}:00</p>
+    <p>Duration: {{ lesson_slot[13] }} minutes</p>
+    <p>Location: {{ lesson_slot[22] }}</p>
+    
+    <form method="POST">
+        <button type="submit" class="btn btn-danger">Confirm Cancel</button>
+        <a href="{{ url_for('instructor.manage_lesson_slots') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

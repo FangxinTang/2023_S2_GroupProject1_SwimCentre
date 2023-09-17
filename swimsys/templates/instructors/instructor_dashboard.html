@@ -1,0 +1,33 @@
+{% extends "instructors/base_template/base.html" %}
+
+{% block title %}Instructor Dashboard{% endblock %}
+
+{% block main %}
+<div class="custom-container">
+    <div class="row text-align-center">
+
+        <div class="col-md-12">
+            <h1>Instructor Dashboard</h1>
+            <p>Welcome, {{ username }}</p>
+
+        </div>
+
+    </div>
+    {% if msg %}
+    <div class="alert alert-info mt-3">{{ msg }}</div>
+    {% endif %}
+
+    <div class="row text-align-center">
+        <div class="col-md-12" style="display:flex; justify-content: center;">
+            <div class="card" style="width: 400px; height: 170px;">
+                <div class="card-body">
+                    <a href="{{ url_for('instructor.instructor_view_aqua_schedule') }}" class="btn btn-primary w-100">Weekly
+                        Aqua Aerobics Classes Schedule</a>
+                    <a href="{{ url_for('instructor.upcoming_lessons') }}" class="btn btn-primary w-100 mt-3">Upcoming Private Swimming Lessons</a>
+                    <a href="{{ url_for('instructor.manage_lesson_slots') }}" class="btn btn-primary w-100 mt-3">Manage Private Swimming Lesson Slots</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

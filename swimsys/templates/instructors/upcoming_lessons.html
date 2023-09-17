@@ -1,0 +1,53 @@
+{% extends "instructors/base_template/base.html" %}
+
+{% block title %}Instructor Dashboard{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+
+<!-- {{lessons}} -->
+
+<div class="upcoming-lesson-container">
+    <div class="row text-center">
+        <h2 class="subtitle">Upcoming Lessons</h2>
+    </div>
+
+    <div class="container-fluid">
+    <table class="table table-bordered text-center table-hover">
+        <thead>
+            <tr tr class="bg-light-gray text-uppercase">
+                <th>date</th>
+                <th>Time</th>
+                <th>Duration</th>
+                <th>Pool</th>
+                <th>Member</th>
+                <th>Member Phone</th>
+                <th>Member Email</th>
+                <th>Member Address</th>
+                <th>Birthdate</th>
+                <th>Health Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in lessons %}
+            <tr>
+                <td>{{ lesson[4].strftime("%d/%m/%Y") }}</td>
+                <td>{{ lesson[5].seconds //3600 }}:00</td>
+                <td>{{ lesson[3] }} mins</td>
+                <td>{{ lesson[12] }}</td>
+                <td>{{ lesson[16] }} {{ lesson[17] }}</td>
+                <td>{{ lesson[19] }}</td>
+                <td>{{ lesson[20] }}</td>
+                <td>{{ lesson[21] }}</td>
+                <td>{{ lesson[22].strftime("%d/%m/%Y") }}</td>
+                <td>{{ lesson[23] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+</div>
+{% endblock %}

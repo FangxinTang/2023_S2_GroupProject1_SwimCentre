@@ -1,0 +1,125 @@
+{% extends "instructors/base_template/base.html" %}
+
+{% block title %}Manage Lesson Slots{% endblock %}
+
+{% block main %}
+
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+
+<div class="custom-container">
+    <div class="row text-align-center">
+        <div class="col-md-12">
+            <h1>Manage Private Swimming Lesson Slots</h1>
+        </div>
+    </div>
+    
+    {% if msg %}
+    <div class="alert alert-info mt-3">{{ msg }}</div>
+    {% endif %}
+    
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Add a form for instructors to input available lesson slots -->
+            <form method="POST" action="{{ url_for('instructor.manage_lesson_slots') }}">
+                <!-- Input fields for time, duration, and location -->
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <select id="date" name="date" class="form-control">
+                        {% for date in date_list %}
+                            <option value="{{ date }}">{{ date }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="time">Time:</label>
+                    <select id="time" name="time" class="form-control">
+                        <option value="9:00:00">9:00 AM</option>
+                        <option value="10:00:00">10:00 AM</option>
+                        <option value="11:00:00">11:00 AM</option>
+                        <option value="12:00:00">12:00 PM</option>
+                        <option value="13:00:00">1:00 PM</option>
+                        <option value="14:00:00">2:00 PM</option>
+                        <option value="15:00:00">3:00 PM</option>
+                        <option value="16:00:00">4:00 PM</option>
+                        <option value="17:00:00">5:00 PM</option>
+                        <option value="18:00:00">6:00 PM</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration">Duration (30 or 60 minutes):</label>
+                    <div class="form-check">
+                        <input type="radio" id="duration30" name="duration" class="form-check-input" value="30">
+                        <label class="form-check-label" for="duration30">30 minutes</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" id="duration60" name="duration" class="form-check-input" value="60">
+                        <label class="form-check-label" for="duration60">60 minutes</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <select id="location" name="location" class="form-control">
+                        <option value="Olympic">Olympic</option>
+                        <option value="Hydrotherapy">Hydrotherapy</option>
+                        <option value="Training">Training</option>
+                        <option value="Family">Family</option>
+                    </select>
+                </div>
+                <p> </p>
+                <button type="submit" class="btn btn-primary">Add Lesson Slot</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Display the instructor's existing lesson slots here -->
+    <!-- Display the instructor's existing lesson slots here -->
+<div class="row">
+    <div class="col-md-12">
+        <h2>Existing Private Swimming Lesson Slots</h2>
+        <table class="table table-bordered text-center table-hover">
+            <thead>
+                <tr class="bg-light-gray text-uppercase">
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Duration</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Change Status</th>
+                    <!-- Add more table headers as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for slot in lesson_slots %}
+                <tr>
+                    <td>{{ slot[14].strftime("%d/%m/%Y") }}</td> <!-- Display date -->
+                    <td>{{ slot[15] }}</td> <!-- Display time -->
+                    <td>{{ slot[13] }} minutes</td>
+                    <td>{{ slot[22] }}</td>
+                    <td>{{ slot[17] }}</td>
+                
+                    {% if slot[17] == "available" %}
+                    <td>
+                        <form method="POST" action="{{ url_for('instructor.cancel_class', lesson_id=slot[10]) }}">
+                            <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal{{ slot[10] }}">
+                                Cancel
+                            </button>
+
+                        </form>
+                    </td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
