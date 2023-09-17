@@ -1,0 +1,67 @@
+{% extends "admins/base_template/base.html" %}
+
+<!-- lesson_list=lesson_list, 
+time_slots=constance.TIME_SLOTS,  
+weekday_date_list-->
+
+{% block title %}Lesson Slots{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+<h2 class="subtitle">Fortnightly Private Swimming Lesson Slots</h2>
+
+<div class="container-fluid" style="width: 90%;">
+
+    <div class="">
+        <table id="lesson-slot-table" class="table table-bordered text-center table-hover">
+            <thead>
+                <tr class="bg-light-gray text-uppercase">
+                    <th class="text-uppercase">Time</th>
+                    {% for day, date in weekday_date_list %}
+                    <th class="text-uppercase">
+                        {{day}}<br>
+                        {{date}}
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+        <tbody>
+            {% for slot in time_slots %}
+                <tr>
+                    <td class="time-column">{{ slot[0]}}:00</td>
+                    {% for date in date_list %}                     
+                        <td>
+                            {% for lesson in lesson_list %}
+                                {% if lesson[4] == date and lesson[5].seconds//3600 == slot[0]  %}
+                                    {% if lesson[7] == "booked" %}
+                                        <span class="banner-booked">{{(lesson[7]).capitalize() }}</span>
+                                        <div class="intro-words">
+                                            <p>Duration:</p>
+                                            <p class="strong">{{ lesson[5].seconds//3600 }}:00 / {{ lesson[3] }}min</p>
+                                            <p>Instructor:</p>
+                                            <p class="strong">{{ lesson[13] }} {{ lesson[14] }}</p>
+                                        </div>
+                                    {% elif lesson[7] == "available" %}
+                                        <span class="banner">{{ lesson[7].capitalize() }}</span>
+                                        <div class="intro-words">
+                                            <p>Duration:</p>
+                                            <p class="strong">{{ lesson[5].seconds // 3600 }}:00 / {{ lesson[3] }}min</p>
+                                            <p>Instructor:</p>
+                                            <p class="strong">{{ lesson[13] }} {{ lesson[14] }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>                        
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+</div>
+{% endblock %}

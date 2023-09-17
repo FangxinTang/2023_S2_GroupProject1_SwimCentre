@@ -1,0 +1,45 @@
+{% extends "admins/base_template/base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block main %}
+<div class="custom-container">
+    <div class="row text-align-center">
+
+        <div class="col-md-12">
+            <h1>Admin Dashboard</h1>
+            <p>Welcome, {{ username }}</p>
+            
+        </div>
+        
+    </div>
+
+    <div class="row text-align-center">
+        <div class="col-md-12" style="display:flex; justify-content: center;">
+            <div class="card" style="width: 400px">
+            <!-- <div class="card" style="width: 400px; height: 450px;"> -->
+                <div class="card-body">
+                    <a href="{{ url_for('admin.admin_member_list') }}" class="btn btn-primary w-100">Manage Members</a>
+                    <br><br>
+                    <a href="{{ url_for('admin.admin_view_aqua_schedule') }}" class="btn btn-primary w-100">Weekly Aqua Aerobics Classes Schedule</a>
+                    <br><br>
+                    <a href="{{ url_for('admin.view_lesson_slots') }}" class="btn btn-primary w-100">Fortnightly Private Swimming Lessons Slots</a>
+                    <br><br>
+                    <a href="{{ url_for('admin.admin_subscription_status') }}" class="btn btn-primary w-100">Member Subscription Status</a>
+                    <br><br>
+                    <a href="{{ url_for('admin.admin_track_payment') }}" class="btn btn-primary w-100">Payment History</a>
+                    <br><br>
+                    <a href="{{ url_for('admin.financial_report') }}" class="btn btn-primary w-100">Financial Report</a>
+                    <br><br>
+                    <a href="{{ url_for('admin.admin_select_attendance') }}" class="btn btn-primary w-100">Attendance Report</a>
+                    <br><br>
+                    <a href="{{ url_for('admin.admin_select_aerobics') }}" class="btn btn-primary w-100">Aqua Aerobics Classes Report</a>
+                    <br><br>
+                    <a href="{{ url_for('admin.admin_news_update') }}" class="btn btn-primary w-100">Send Members News/Updates</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

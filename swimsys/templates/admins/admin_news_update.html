@@ -1,0 +1,42 @@
+{% extends "admins/base_template/base.html" %}
+
+{% block title %}Send News/Updates to members{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+  <button class="back-button btn btn-outline-primary" 
+          onclick="window.location.href = '/admin/admin/dashboard'">
+    Back
+  </button>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Send News/Updates to members</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('admin.admin_news_update') }}" onsubmit="return confirm('Are you sure you want to send this news/update?');">
+                        <div class="form-group">
+                            <label for="subject">Subject:</label>
+                            <input type="text" name="subject" class="form-control" placeholder="Enter subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content:</label>
+                            <textarea name="content" class="form-control" rows="5" placeholder="Enter content" required></textarea>
+                        </div>
+                        <div class="form-group text-center" style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary">Create News/Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

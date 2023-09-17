@@ -1,0 +1,64 @@
+{% extends "admins/base_template/base.html" %}
+
+{% block title %}Attendance Report{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+  <button
+  class="back-button btn btn-outline-primary" 
+  onclick="window.location.href ='/admin/admin/dashboard'">
+  Back
+  </button>
+</div>
+
+<div class="custom-container">
+    <div class="row  text-align-center">
+        <div class="subtitle col-md-12">
+            <h2 class="subtitle">Attendance Report</h1>
+        
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="display: flex; justify-content: center;">
+            <div class="card">
+
+                <div class="card-body"  style="width: 600px">
+
+                    <form action="/admin/admin/display_attendance" method="post">
+                        
+                        <div class="mb-3">
+                            <label for="choose-member" class="form-label">Choose a member:</label> 
+                            <select name="member" id="member" class="form-control"> 
+                                {% for member_id, name in member_name_dict.items() %}
+                                <option value="{{member_id}}|{{name}}"> {{member_id}} {{name}} </option>    
+                                {% endfor %}          
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="choose-period" class="form-label">Choose a period:</label> 
+                            <select name="period" id="period" class="form-control"> 
+                                {% for period in period_list %}
+                                    <option value="{{period}}" 
+                                        {% if period == 'September' %}
+                                            selected="selected"
+                                        {% endif %}> {{period}} 
+                                    </option>   
+                                {% endfor %}              
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary save-btn">Show Report</button>
+                    </form>
+
+
+                    {% if msg %}
+                        <div class="alert alert-info mt-3">{{ msg }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

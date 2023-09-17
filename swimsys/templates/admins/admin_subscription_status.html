@@ -1,0 +1,51 @@
+{% extends "admins/base_template/base.html" %}
+
+{% block title %}Subscription Status{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+
+<div class="custom-container">
+    <h2 class="subtitle">Subscription Status</h2>
+
+    <!-- Add a search form -->
+    <form method="GET" action="{{ url_for('admin.admin_subscription_status') }}" class="mb-4">
+        <div class="form-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by Member ID, First Name, or Last Name">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <table class="table table-bordered text-center table-hover">
+        <colgroup>
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+        </colgroup>
+        <thead>
+            <tr class="bg-light-gray text-uppercase">
+                <th class="text-center">Member ID</th>
+                <th class="text-center">First Name</th>
+                <th class="text-center">Last Name</th>
+                <th class="text-center">Subscription Type</th>
+                <th class="text-center">Subscription Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subscription_status in subscription_status_list %}
+                <tr>
+                    <td class="text-center">{{ subscription_status[0] }}</td>
+                    <td class="text-center">{{ subscription_status[1] }}</td>
+                    <td class="text-center">{{ subscription_status[2] }}</td>
+                    <td class="text-center">{{ subscription_status[3] }}</td>
+                    <td class="text-center">{{ subscription_status[4] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

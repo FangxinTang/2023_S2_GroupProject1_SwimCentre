@@ -1,0 +1,46 @@
+{% extends "admins/base_template/base.html" %}
+
+{% block title %}Payment Tracking{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+    <h2 class="subtitle">Payment of {{selected_member_name}}</h2>
+    <table class="table table-bordered table-fixed mt-4">
+        <colgroup>
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="text-center">Payment ID</th>
+                <th class="text-center">Member ID</th>
+                <th class="text-center">First Name</th>
+                <th class="text-center">Last Name</th>
+                <th class="text-center">Payment Type</th>
+                <th class="text-center">Payment Amount</th>
+                <th class="text-center">Payment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in selected_paymentList %}
+                <tr>
+                    <td class="text-center">{{ payment[0] }}</td>
+                    <td class="text-center">{{ payment[1] }}</td>
+                    <td class="text-center">{{ payment[2] }}</td>
+                    <td class="text-center">{{ payment[3] }}</td>
+                    <td class="text-center">{{ payment[6] }}</td>
+                    <td class="text-center">{{ payment[4] }}</td>
+                    <td class="text-center">{{ payment[5].strftime("%d/%m/%Y") }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

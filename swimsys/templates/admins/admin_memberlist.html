@@ -1,0 +1,55 @@
+{% extends "admins/base_template/base.html" %}
+
+{% block title %}Member List{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+  <button
+  class="back-button btn btn-outline-primary" 
+  onclick="window.location.href ='/admin/admin/dashboard'">
+  Back
+  </button>
+</div>
+
+
+<div class="wide-container">
+    <div class="row">
+        <div class="col-md-12 subtitle">
+            <h2 class="subtitle">Member List</h2>
+        </div>
+    </div>
+          <div class="custom-container" style="text-align: right;">
+            <a href="/admin/admin/member_form">Add A Member</a>
+          </div>
+            
+            <table class="table table-bordered text-center table-hover">
+              <thread>
+                <tr class="bg-light-gray text-uppercase">
+                  <th>Ttile</th><th>First Name</th><th>Last Name</th><th>Position</th><th>Phone</th><th>Email</th>
+                  <th>Address</th><th>Birthdate</th><th>Health Information</th><th>Actions</th>            
+                </tr>
+              </thread>
+              <tbody>
+                {% for member in member_list %}
+                    <tr>
+                        <td>{{member[1]}}</td>
+                        <td>{{member[2]}}</td>
+                        <td>{{member[3]}}</td>
+                        <td>{{member[4]}}</td>
+                        <td>{{member[5]}}</td>
+                        <td>{{member[6]}}</td>
+                        <td>{{member[7]}}</td>
+                        <td>{{member[8].strftime("%d/%m/%Y")}}</td>
+                        <td>{{member[9]}}</td>
+                        <td>
+                          <a href="/admin/admin/member_info/{{member[10]}}">Update</a>
+                          <a href="/admin/admin/delete_member/{{member[0]}}" onclick="return confirm('Are you sure you want to delete this member?')">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+
+</div>
+{% endblock %}

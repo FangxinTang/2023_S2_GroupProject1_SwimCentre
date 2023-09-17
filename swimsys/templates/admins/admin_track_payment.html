@@ -1,0 +1,73 @@
+{% extends "admins/base_template/base.html" %}
+
+{% block title %}Payment Tracking{% endblock %}
+
+{% block main %}
+<div class="back-button-container">
+    <button class="back-button btn btn-outline-primary" onclick="goBack()">Back</button>
+</div>
+<div class="container">
+    <div class="custom-container">
+        <div class="row  text-align-center">
+            <div class="subtitle col-md-12">
+                <h2 class="subtitle">Search Payment by Member</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="display: flex; justify-content: center;">
+                <div class="card">
+                    <div class="card-body"  style="width: 600px; height: 150px;">
+                        <form action="/admin/payment" method="POST">
+                            
+                            <div class="mb-3">
+                                <label for="choose-member" class="form-label">Choose a member:</label> 
+                                <select name="member" id="member" class="form-control"> 
+                                    {% for member_id, name in member_name_dict.items() %}
+                                    <option value="{{member_id}}|{{name}}"> {{member_id}} {{name}} </option>    
+                                    {% endfor %}          
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary save-btn">Search</button>    
+                        </form>
+                    </div>
+                </div>
+            </div>    
+        </div>
+    <h3 class="text-center mt-4">List of All Payments</h2>
+    <table class="table table-bordered table-fixed mt-4">
+        <colgroup>
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+            <col style="width: 14%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="text-center">Payment ID</th>
+                <th class="text-center">Member ID</th>
+                <th class="text-center">First Name</th>
+                <th class="text-center">Last Name</th>
+                <th class="text-center">Payment Type</th>
+                <th class="text-center">Payment Amount</th>
+                <th class="text-center">Payment Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in paymentList %}
+                <tr>
+                    <td class="text-center">{{ payment[0] }}</td>
+                    <td class="text-center">{{ payment[1] }}</td>
+                    <td class="text-center">{{ payment[2] }}</td>
+                    <td class="text-center">{{ payment[3] }}</td>
+                    <td class="text-center">{{ payment[6] }}</td>
+                    <td class="text-center">{{ payment[4] }}</td>
+                    <td class="text-center">{{ payment[5].strftime("%d/%m/%Y") }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

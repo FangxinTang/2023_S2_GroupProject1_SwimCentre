@@ -1,0 +1,90 @@
+{% extends "admins/base_template/base.html" %}
+
+{% block title %}Member Profile{% endblock %}
+
+<!-- Name (Title, First Name, Family Name), Position, Phone Number, Email.  -->
+
+{% block main %}
+<div class="custom-container">
+    <div class="back-button-container">
+        <button
+        class="back-button btn btn-outline-primary" 
+        onclick="window.location.href ='/admin/admin/member_list'">
+        Back
+        </button>
+    </div>
+
+    <div class="custom-container">
+        <div class="row text-align-center">
+            <h2 class="subtitle">Update Member Profile</h2>
+            <p>update the profile information below:</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="display: flex; justify-content: center;">
+            <div class="card">
+                <div class="card-body" style="width: 420px">
+                    <form action="/admin/admin/update_member/{{account[-4]}}/{{account[-2]}}" method="post">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title:</label>
+                            <input type="text" id="title" name="title" class="form-control" value="{{account[1]}}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label"><span style="color: red;">*</span>First Name:</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control" value="{{account[2]}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label"><span style="color: red;">*</span>Last Name:</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control" value="{{account[3]}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="position" class="form-label">Position:</label>
+                            <input type="text" id="position" name="position" class="form-control" value="{{account[4]}}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label"><span style="color: red;">*</span>Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" value="{{account[6]}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label"><span style="color: red;">*</span>Phone:</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" value="{{account[5]}}" required>
+                        </div>
+                    
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address:</label>
+                            <input type="text" id="address" name="address" class="form-control" value="{{account[7]}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthdate" class="form-label"><span style="color: red;">*</span>Birthday:</label>
+                            <input type="date" id="birthdate" name="birthdate" class="form-control" value="{{account[8]}}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label"><span style="color: red;">*</span>Username:</label>
+                            <input type="text" id="username" name="username" class="form-control" value="{{account[15]}}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="****">
+                        </div>
+                        <div class="mb-3">
+                            <label for="health_info" class="form-label">Health Information:</label>
+                            <input type="text" id="health_info" name="health_info" class="form-control" value="{{account[9]}}">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary save-btn">Update Profile</button>
+                    </form>
+                    {% if msg %}
+                        <div class="alert alert-info mt-3">{{ msg }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

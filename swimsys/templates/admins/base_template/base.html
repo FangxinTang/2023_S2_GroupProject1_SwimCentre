@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../../static/style.css">
+
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+  <div class="custom-container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom">
+      
+        <img id="logo" src="../../../static/img/swim_logo.png" alt="logo">
+
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-left mb-md-0">
+        <li class="nav-item dropdown">
+
+          <a class="nav-link px-2 link-secondary dropdown-toggle" href="#" id="navbarDropdown" role="button"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dashboard
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <!-- <a class="dropdown-item" href="{{url_for('admin.admin_dashboard')}}">My Dashboard</a>
+            <a class="dropdown-item" href="{{url_for('admin.admin_view_aqua_schedule')}}">View Aqua Aerobics
+              Classes</a>
+            <a class="dropdown-item" href="{{url_for('admin.view_lesson_slots')}}">View Individual Lessons</a>
+            <a class="dropdown-item" href="{{url_for('admin.admin_subscription_status')}}">View Member Subscription Status</a>
+            <a class="dropdown-item" href="{{url_for('admin.admin_track_payment')}}">View Member Payment History</a>
+            <a class="dropdown-item" href="{{url_for('admin.admin_display_attendance')}}">View Attendance Report</a>
+            <a class="dropdown-item" href="{{url_for('admin.display_profile')}}">Update My Profile</a> -->
+            
+            <a class="dropdown-item" href="{{url_for('admin.admin_dashboard')}}"><span style="color: red;">*</span>My Dashboard</a>
+            <a class="dropdown-item" href="{{ url_for('admin.admin_member_list') }}" class="btn btn-primary w-100">Manage Members</a>
+            <a class="dropdown-item" href="{{ url_for('admin.admin_view_aqua_schedule') }}" class="btn btn-primary w-100">Weekly Aqua Aerobics Classes Schedule</a>
+            <a class="dropdown-item" href="{{ url_for('admin.view_lesson_slots') }}" class="btn btn-primary w-100">Fortnightly Private Swimming Lessons Slots</a>
+            <a class="dropdown-item" href="{{ url_for('admin.admin_subscription_status') }}" class="btn btn-primary w-100">Member Subscription Status</a>
+            <a class="dropdown-item" href="{{ url_for('admin.admin_track_payment') }}" class="btn btn-primary w-100">Payment History</a>
+            <a class="dropdown-item" href="{{ url_for('admin.financial_report') }}" class="btn btn-primary w-100">Financial Report</a>
+            <a class="dropdown-item" href="{{ url_for('admin.admin_select_attendance') }}" class="btn btn-primary w-100">Attendance Report</a>
+            <a class="dropdown-item" href="{{ url_for('admin.admin_select_aerobics') }}" class="btn btn-primary w-100">Aqua Aerobics Classes Report</a>
+            <a class="dropdown-item" href="{{ url_for('admin.admin_news_update') }}" class="btn btn-primary w-100">Send Members News/Updates</a>
+          </div>
+        </li>
+
+        <a href="{{ url_for('admin.display_profile') }}" class="nav-link px-2 link-secondary">Profile</a>
+        <a href="{{ url_for('public.logout') }}" class="nav-link px-2 link-dark">Log Out</a>
+      </ul>
+    </header>
+  </div>
+  <!-- using this method to create different box notification for flashed category: -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        {% with messages = get_flashed_messages(category_filter=["success"]) %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <span>{{ message }}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+
+      <div class="col-sm-4">
+        {% with messages = get_flashed_messages(category_filter=["warning"]) %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <span>{{ message }}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+
+      <div class="col-sm-4">
+        {% with messages = get_flashed_messages(category_filter=["danger"]) %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <span>{{ message }}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+
+  <main>
+    {% block main %}{% endblock %}
+  </main>
+
+  <div class="custom-container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+          <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+        <span class="mb-3 mb-md-0 text-muted">© Hello, We are Group 7, Inc</span>
+      </div>
+  
+      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+      </ul>
+    </footer>
+  </div>
+
+ <!-- Bootstrap Bundle JS --> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <!-- Custom JS --> 
+    <script src="../../../static/app.js"></script>
+</body>
+
+</html>
