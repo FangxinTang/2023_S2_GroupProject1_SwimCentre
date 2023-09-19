@@ -20,9 +20,9 @@
 5. Help member to debugging problems of uploading instructor image to designated routes, displaying the image in their profile correctly, and displaying them in member view instructor profile sections /3hours
 
 ### Sprint 3
-1. Tidy up issues left from sprint 2 review meeting, such as unifying CSS style, adding back button to all pages, adding drop down menus for three dashboard pages, adding “fully booked” in scheduled class tables, and adding pool info in the schedule tables, adding red stars in forms, creating java script confirmation popup when clicking pay and booking buttons
-2. As a member, I want to view all my bookings for classes and swimming lessons, so that I know which class or lesson is upcoming
-3. As a member, I want to pay for the individual swimming lesson, so that I can secure the instructor's timetable.
-4. As a member, I want to cancel a booking
-5. Create Pools table, and insert data into related tables
-6. Helping team members to fix bugs
+1. Tidy up issues left from sprint 2 review meeting, such as unifying CSS style, adding back button to all pages, adding drop down menus for three dashboard pages, adding “fully booked” in scheduled class tables, and adding pool info in the schedule tables, adding red stars in forms, creating java script confirmation popup when clicking pay and booking buttons /5hours
+2. As a member, I want to view all my bookings for classes and swimming lessons, so that I know which class or lesson is upcoming /4hours
+3. As a member, I want to pay for the individual swimming lesson, so that I can secure the instructor's timetable. /4hours
+4. As a member, I want to cancel a booking /1hour
+5. Create Pools table, and insert data into related tables /3hours
+6. Helping team members to fix bugs /2hours
