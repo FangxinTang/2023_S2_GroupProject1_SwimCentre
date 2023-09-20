@@ -1,6 +1,7 @@
 # Semester One 2023 | COMP639 Studio Project | Group Project 1
 ---------------------------------------
-#### Marks:
+#### Marks: 83/100
+![Functions](GroupProject1_Marks.png)
 ---------------------------------------
 ## Functions:
 ![Functions](functions.png)
