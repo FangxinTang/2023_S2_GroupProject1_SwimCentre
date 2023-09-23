@@ -1,7 +1,11 @@
 # Semester One 2023 | COMP639 Studio Project | Group Project 1
 ---------------------------------------
-##### End Project Report: 98.3/100
-##### Source Code Marks: 83/100
+##### Marks:
+- Overall: 93.3/100
+- Peer Review Assessment: 100/100
+- Project Report: 98.3/100
+- Source Code Marks: 83/100
+##### Examiner's Feedback on Source Code:
 ![Marks](GroupProject1_Marks.jpg)
 ---------------------------------------
 ## Functions:
